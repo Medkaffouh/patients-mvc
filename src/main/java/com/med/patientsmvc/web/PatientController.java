@@ -58,10 +58,25 @@ public class PatientController {
         model.addAttribute("patient", new Patient());
         return "formPatients";
     }
-    @PostMapping(path="/save")
-    public String save(Model model, @Valid Patient patient, BindingResult bindingResult){
+    @PostMapping(path="/save") //si le patient et avec le id la method save dovient edit si y'a pas de id save normal.
+    public String save(Model model, @Valid Patient patient, BindingResult bindingResult,
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "") String keyword){
         if(bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
-        return "redirect:/formPatients";
+        return "redirect:/index?page="+page+"&keyword="+keyword;
     }
+    @GetMapping("/editPatient")
+    public String editPatient(Model model, Long id, String keyword, int page){
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if(patient==null) throw new RuntimeException("Patient introvable");
+        model.addAttribute("patient", patient);
+        model.addAttribute("page",page);
+        model.addAttribute("keyword",keyword);
+        return "editPatient";
+    }
+
+    //pour pouvoire garder l'etat de l'application il faut transmettre des parameter d'une page
+    //vers une autre
+    //mais dand le rendement coté client ce problem est disparait.
 }
