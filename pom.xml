@@ -74,6 +74,12 @@
             <version>2.6.7</version>
         </dependency>
 
+        <!-- Pour utiliser thymeleaf avec spring boot security vous devez import les dependance -->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -27,16 +28,20 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Patients</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" th:href="@{/formPatients}">Nouveau</a></li>
+                    <!-- Ne conmencer pas à masquée les choses vous devez etre sur que l'application est
+                     securisé puis masquee si vous voullez-->
+                    <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/formPatients}">Nouveau</a></li>
                     <li><a class="dropdown-item" th:href="@{index}">Chercher</a></li>
                 </ul>
             </li>
         </ul>
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">[Username]</a>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <span sec:authentication="name"></span>
+                </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" th:href="@{/formPatients}">Logout</a></li>
+                    <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
                 </ul>
             </li>
         </ul>
