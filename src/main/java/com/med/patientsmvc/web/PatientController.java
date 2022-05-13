@@ -44,7 +44,7 @@ public class PatientController {
 
     @GetMapping("/")
     public String home(){
-        return "redirect:/index";
+        return "home";
     }
 
     //en cas vous voulez utilisé la rendement coté client sans utilisé l'annotation @RestController
@@ -53,6 +53,7 @@ public class PatientController {
     public List<Patient> listPatients(){
         return patientRepository.findAll();
     }
+
     @GetMapping("/formPatients")
     public String formPatients(Model model){
         model.addAttribute("patient", new Patient());
