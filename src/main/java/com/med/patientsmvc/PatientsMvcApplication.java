@@ -2,6 +2,7 @@ package com.med.patientsmvc;
 
 import com.med.patientsmvc.entities.Patient;
 import com.med.patientsmvc.repositories.PatientRepository;
+import com.med.patientsmvc.security.service.SecurityService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +17,7 @@ public class PatientsMvcApplication {
         SpringApplication.run(PatientsMvcApplication.class, args);
     }
 
-    @Bean
+    //@Bean
     CommandLineRunner commandLineRunner(PatientRepository patientRepository){
         return args -> {
             patientRepository.save(new Patient(null,"Hassan",new Date(),false,112));
@@ -27,6 +28,23 @@ public class PatientsMvcApplication {
             patientRepository.findAll().forEach(p->{
                 System.out.println(p.getNom());
             });
+        };
+    }
+
+    //@Bean
+    CommandLineRunner saveUsers(SecurityService securityService){
+        return args -> {
+            securityService.saveNewUser("mohamed","1234","1234");
+            securityService.saveNewUser("yasmine","1234","1234");
+            securityService.saveNewUser("hassan","1234","1234");
+
+            securityService.saveNewRole("USER","");
+            securityService.saveNewRole("ADMIN","");
+
+            securityService.addRoleToUser("mohamed","USER");
+            securityService.addRoleToUser("mohamed","ADMIN");
+            securityService.addRoleToUser("yasmine","USER");
+            securityService.addRoleToUser("hassan","USER");
         };
     }
 }

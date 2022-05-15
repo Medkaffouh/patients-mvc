@@ -1,5 +1,6 @@
 package com.med.patientsmvc.security;
 
+import com.med.patientsmvc.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,8 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         /* in memoire authenticatin
@@ -30,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password(passwordEncoder.encode("2345")).roles("USER","ADMIN");
          */
 
-        /* jdbc authentication */
+        /* jdbc authentication
         PasswordEncoder passwordEncoder = passwordEncoder();
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
@@ -38,7 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("select username as principale, role as role from users_roles where username=?")
                 .rolePrefix("ROLE_")
                 .passwordEncoder(passwordEncoder);
+        */
 
+        /* user details service */
+        auth.userDetailsService(userDetailsService);
 
     }
 
@@ -46,8 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin();
         http.authorizeRequests().antMatchers("/").permitAll();
-        http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("/user/**").hasRole("USER");
+        //http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN"); dans la 1er et 2eme methode ca marche
+        //http.authorizeRequests().antMatchers("/user/**").hasRole("USER"); dans la 1er et 2eme methode ca marche
+        http.authorizeRequests().antMatchers("/admin/**").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers("/user/**").hasAuthority("USER");
         http.authorizeRequests().antMatchers("/webjars/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/403");
