@@ -3,13 +3,12 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="template1">
 <head>
-    <meta charset="UTF-8">
     <title>Form Patients</title>
 </head>
 <body>
     <div layout:fragment="content1">
         <div class="col-md-6 offset-3">
-            <form method="post" th:action="@{save(page=${page},keyword=${keyword})}">
+            <form method="post" th:action="@{/admin/save(page=${page},keyword=${keyword})}">
                 <div class="mb-3">
                     <label>ID :</label>
                     <label th:text="${patient.id}"></label>
