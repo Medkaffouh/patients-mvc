@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
@@ -46,5 +48,13 @@ public class PatientsMvcApplication {
             securityService.addRoleToUser("yasmine","USER");
             securityService.addRoleToUser("hassan","USER");
         };
+    }
+
+    //pour pas tember dans le cas "circular references" on deplace ce bean de SecurityConfig à ce class
+    //le problem est:
+    // -> securityCongig -> userDetailsServiceImpl -> securityServiceImpl ->
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }
