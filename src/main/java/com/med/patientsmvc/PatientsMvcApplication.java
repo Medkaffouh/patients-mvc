@@ -51,8 +51,7 @@ public class PatientsMvcApplication {
     }
 
     //pour pas tember dans le cas "circular references" on deplace ce bean de SecurityConfig à ce class
-    //le problem est:
-    // -> securityCongig -> userDetailsServiceImpl -> securityServiceImpl ->
+    //le problem est: -> securityCongig -> userDetailsServiceImpl -> securityServiceImpl ->
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
